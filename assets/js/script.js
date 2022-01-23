@@ -47,25 +47,40 @@ generatePassword = () => {
   }
   //build character bank, and pre seed with required characters.
   var mandatoryChars = [];
-  var charBank;
+  var charBank = '';
+  var randValues = new Uint8Array(passLength);
+  //window.crypto.getRandomValues(randValues);
+  randValues = randValues.map( x => Math.floor( Math.random()*256) );
+
   if(useLowercase){
-    mandatoryChars.push( lowerChars[Math.floor(Math.random()*lowerChars.length)] );
-    charBank = charBank + lowerChars;
+    mandatoryChars.push( lowerChars[Math.floor( randValues[0] % lowerChars.length)] );
+    charBank = charBank.concat(lowerChars);
   }
   if(useUppercase){
-    mandatoryChars.push( upperChars[Math.floor(Math.random()*upperChars.length)] );
-    charBank = charBank + lowerChars;
+    mandatoryChars.push( upperChars[Math.floor( randValues[mandatoryChars.length] % upperChars.length)] );
+    charBank = charBank.concat(lowerChars);
   }
   if(useNum){
-    mandatoryChars.push( numChars[Math.floor(Math.random()*numChars.length)] );
-    charBank = charBank + lowerChars;
+    mandatoryChars.push( numChars[Math.floor( randValues[mandatoryChars.length] % numChars.length)] );
+    charBank = charBank.concat(lowerChars);
   }
   if(useSpecChar){
-    mandatoryChars.push( specChars[Math.floor(Math.random()*specChars.length)] );
-    charBank = charBank + lowerChars;
+    mandatoryChars.push( specChars[Math.floor( randValues[mandatoryChars.length] % specChars.length)] );
+    charBank = charBank.concat(lowerChars);
   }
 
-  //generate 
+  var password = '';
+  //generate password
+  mandatoryChars.sort(()=> Math.random() - 0.5);
+  for(i in mandatoryChars){
+    password = password.concat(mandatoryChars[i]);
+  }
+  for(var pos = password.length; pos < passLength; pos++){
+    password = password.concat(charBank[ Math.floor( [password.length] % charBank.length )]); 
+  }
+
+
+  return password;
 }
 // Add event listener to generate button
 generateBtn.addEventListener("click", writePassword);
