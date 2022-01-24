@@ -48,9 +48,9 @@ generatePassword = () => {
   //build character bank, and pre seed with required characters.
   var mandatoryChars = [];
   var charBank = '';
-  var randValues = new Uint8Array(passLength);
+  var randValues = new Uint16Array(passLength);
   //window.crypto.getRandomValues(randValues);
-  randValues = randValues.map( x => Math.floor( Math.random()*256) );
+  randValues = randValues.map( x => Math.floor( Math.random()*65500 ) );
 
   if(useLowercase){
     mandatoryChars.push( lowerChars[Math.floor( randValues[0] % lowerChars.length)] );
@@ -58,15 +58,15 @@ generatePassword = () => {
   }
   if(useUppercase){
     mandatoryChars.push( upperChars[Math.floor( randValues[mandatoryChars.length] % upperChars.length)] );
-    charBank = charBank.concat(lowerChars);
+    charBank = charBank.concat(upperChars);
   }
   if(useNum){
     mandatoryChars.push( numChars[Math.floor( randValues[mandatoryChars.length] % numChars.length)] );
-    charBank = charBank.concat(lowerChars);
+    charBank = charBank.concat(numChars);
   }
   if(useSpecChar){
     mandatoryChars.push( specChars[Math.floor( randValues[mandatoryChars.length] % specChars.length)] );
-    charBank = charBank.concat(lowerChars);
+    charBank = charBank.concat(specChars);
   }
 
   var password = '';
