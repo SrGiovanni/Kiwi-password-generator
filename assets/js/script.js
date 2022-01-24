@@ -45,7 +45,9 @@ generatePassword = () => {
   if(!useUppercase && !useLowercase && !useNum && !useSpecChar){
     return undefined;
   }
-  //build character bank, and pre seed with required characters.
+  //build character bank in 'charBank' variable
+  //and pre seed with required characters.
+  //set random values in randValues. Should be updated for cryptographically strong RVs
   var mandatoryChars = [];
   var charBank = '';
   var randValues = new Uint16Array(passLength);
@@ -78,7 +80,6 @@ generatePassword = () => {
   for(var pos = password.length; pos < passLength; pos++){
     password = password.concat(charBank[ Math.floor( [password.length] % charBank.length )]); 
   }
-
 
   return password;
 }
